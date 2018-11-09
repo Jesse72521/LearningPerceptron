@@ -61,6 +61,26 @@ def CalcWeights(targetArray, startingWeights):
             currentArray[3] = (calcPerceptron(startingWeights, 1, 1))
     return startingWeights
 
+def CalcNotWeights(targetArray, startingWeights):
+    currentArray = [0,0,0,0]
+    while targetArray != currentArray:
+        currentArray[0] = (calcPerceptron(startingWeights, 0, 0))
+        currentArray[1] = (calcPerceptron(startingWeights, 0, 1))
+        while(currentArray[0] != targetArray[0]):
+            tempVal = calcPerceptron(startingWeights, 0, 0)
+            startingWeights[0] = startingWeights[0] + ChangeInWeight(targetArray[0], tempVal, 1)
+            startingWeights[1] = startingWeights[1] + ChangeInWeight(targetArray[0], tempVal, 0)
+            currentArray[0] = (calcPerceptron(startingWeights, 0, 0))
+            currentArray[1] = (calcPerceptron(startingWeights, 1, 0))
+        while(currentArray[1] != targetArray[1]):
+            tempVal = calcPerceptron(startingWeights, 1, 0)
+            startingWeights[0] = startingWeights[0] + ChangeInWeight(targetArray[1], tempVal, 1)
+            startingWeights[1] = startingWeights[1] + ChangeInWeight(targetArray[1], tempVal, 1)
+            currentArray[0] = (calcPerceptron(startingWeights, 0, 0))
+            currentArray[1] = (calcPerceptron(startingWeights, 1, 0))
+    return startingWeights
+
+
 randomWeights = []
 randomWeights.append(random.uniform(-1,1))
 randomWeights.append(random.uniform(-1,1))
@@ -73,16 +93,29 @@ for x in randomWeights:
 # AND
 targetValues = [-1,-1,-1,1]
 andWeights = CalcWeights(targetValues, randomWeights)
-print("Final weight values for AND\n:")
+print("Final weight values for AND:")
 for x in andWeights:
     print("%.2f" % x)
+print("")
 
 # OR
 targetValues = [-1,1,1,1]
-andWeights = CalcWeights(targetValues, randomWeights)
-print("Final weight values for OR\n:")
-for x in andWeights:
+orWeights = CalcWeights(targetValues, randomWeights)
+print("Final weight values for OR:")
+for x in orWeights:
     print("%.2f" % x)
+print("")
 
-
+#NOT
+randomWeights = []
+randomWeights.append(random.uniform(-1,1))
+randomWeights.append(random.uniform(-1,1))
+randomWeights.append(0)
+targetValues = [1,-1, 0, 0]
+notWeights = CalcNotWeights(targetValues, randomWeights)
+print("Final weight values for NOT:")
+notWeights.pop()
+for x in notWeights:
+    print("%.2f" % x)
+print("")
 
