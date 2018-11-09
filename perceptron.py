@@ -86,9 +86,10 @@ randomWeights.append(random.uniform(-1,1))
 randomWeights.append(random.uniform(-1,1))
 randomWeights.append(random.uniform(-1,1))
 
-print("Random starting weight values:")
+print("Random starting weight values for AND and OR:")
 for x in randomWeights:
     print("%.2f" % x)
+print()
 
 # AND
 targetValues = [-1,-1,-1,1]
@@ -110,6 +111,10 @@ print("")
 randomWeights = []
 randomWeights.append(random.uniform(-1,1))
 randomWeights.append(random.uniform(-1,1))
+print("Random starting weight values for NOT:")
+for x in randomWeights:
+    print("%.2f" % x)
+print()
 randomWeights.append(0)
 targetValues = [1,-1, 0, 0]
 notWeights = CalcNotWeights(targetValues, randomWeights)
