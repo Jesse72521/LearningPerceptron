@@ -1,3 +1,8 @@
+# Jesse Corson
+# Spencer Tubbs
+# Connor Clayton
+# CS 4470
+
 import random
 
 # wi = n(t-o)xi
@@ -15,7 +20,6 @@ def calcPerceptron(weightArray, x1, x2):
     else:
         return -1
     
-# AND
 def CalcWeights(targetArray, startingWeights):
     currentArray = [0,0,0,0]
     while targetArray != currentArray:
@@ -80,7 +84,47 @@ def CalcNotWeights(targetArray, startingWeights):
             currentArray[1] = (calcPerceptron(startingWeights, 1, 0))
     return startingWeights
 
+def CalcXorValues(andWeights, orWeights):
+    currentValues = []
+    
+    andValue = calcPerceptron(andWeights, 0, 0)
+    if andValue == -1:
+        andValue = 0
+    orValue = calcPerceptron(orWeights, 0, 0)
+    xorValue = orValue - (andValue * 2)
+    currentValues.append(xorValue)
+    
+    andValue = calcPerceptron(andWeights, 0, 1)
+    if andValue == -1:
+        andValue = 0
+    orValue = calcPerceptron(orWeights, 0, 1)
+    xorValue = orValue - (andValue * 2)
+    currentValues.append(xorValue)
 
+    andValue = calcPerceptron(andWeights, 1, 0)
+    if andValue == -1:
+        andValue = 0
+    orValue = calcPerceptron(orWeights, 1, 0)
+    xorValue = orValue - (andValue * 2)
+    currentValues.append(xorValue)
+
+    andValue = calcPerceptron(andWeights, 1, 1)
+    if andValue == -1:
+        andValue = 0
+    orValue = calcPerceptron(orWeights, 1, 1)
+    xorValue = orValue - (andValue * 2)
+    currentValues.append(xorValue)
+
+    returnValues = []
+    for x in currentValues:
+        if x > 0:
+            returnValues.append(1)
+        else:
+            returnValues.append(-1)
+        
+    return returnValues
+
+#Program starts here
 randomWeights = []
 randomWeights.append(random.uniform(-1,1))
 randomWeights.append(random.uniform(-1,1))
@@ -93,18 +137,30 @@ print()
 
 # AND
 targetValues = [-1,-1,-1,1]
-andWeights = CalcWeights(targetValues, randomWeights)
+andWeights = CalcWeights(targetValues, randomWeights).copy()
 print("Final weight values for AND:")
 for x in andWeights:
     print("%.2f" % x)
 print("")
+print("Output values for AND:")
+print("(0,0) = %i" % calcPerceptron(andWeights, 0, 0))
+print("(0,1) = %i" % calcPerceptron(andWeights, 0, 1))
+print("(1,0) = %i" % calcPerceptron(andWeights, 1, 0))
+print("(1,1) = %i" % calcPerceptron(andWeights, 1, 1))
+print("")
 
 # OR
 targetValues = [-1,1,1,1]
-orWeights = CalcWeights(targetValues, randomWeights)
+orWeights = CalcWeights(targetValues, randomWeights).copy()
 print("Final weight values for OR:")
 for x in orWeights:
     print("%.2f" % x)
+print("")
+print("Output values for OR:")
+print("(0,0) = %i" % calcPerceptron(orWeights, 0, 0))
+print("(0,1) = %i" % calcPerceptron(orWeights, 0, 1))
+print("(1,0) = %i" % calcPerceptron(orWeights, 1, 0))
+print("(1,1) = %i" % calcPerceptron(orWeights, 1, 1))
 print("")
 
 #NOT
@@ -123,4 +179,18 @@ notWeights.pop()
 for x in notWeights:
     print("%.2f" % x)
 print("")
+print("Output values for NOT:")
+randomWeights.append(0)
+print("(0,1) = %i" % calcPerceptron(notWeights, 0, 1))
+print("(1,0) = %i" % calcPerceptron(notWeights, 1, 0))
+notWeights.pop()
+print("")
 
+#XOR
+xorValues = CalcXorValues(andWeights, orWeights)
+print("Output values for XOR: Using OR - (AND * 2)")
+print("(0,0) = %i" % xorValues[0])
+print("(0,1) = %i" % xorValues[1])
+print("(1,0) = %i" % xorValues[2])
+print("(1,1) = %i" % xorValues[3])
+print("")
